@@ -18,7 +18,14 @@ async function run() {
 
     app.get("/task", async (req, res) => {
       const query = {};
-      const result = await taskCollection.find(query).toArray();
+      const sort = { time: -1 };
+      const result = await taskCollection.find(query).sort(sort).toArray();
+      res.send(result);
+    });
+    app.get("/task/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await taskCollection.findOne(query);
       res.send(result);
     });
     app.post("/task", async (req, res) => {
@@ -32,6 +39,20 @@ async function run() {
       const id = req.params.id;
       const query = { _id: new ObjectId(id) };
       const result = await taskCollection.deleteOne(query);
+      res.send(result);
+    });
+
+    app.put("/task/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const updateTask = {
+        $set: {
+          task: req.body.task,
+          completed: req.body.completed,
+        },
+      };
+      const option = { upsert: true };
+      const result = await taskCollection.updateOne(query, updateTask, option);
       res.send(result);
     });
   } finally {
