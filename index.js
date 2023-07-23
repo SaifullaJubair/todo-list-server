@@ -10,7 +10,6 @@ app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.drcwic2.mongodb.net/?retryWrites=true&w=majority`;
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.1l4zbuv.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri);
 async function run() {
   try {
